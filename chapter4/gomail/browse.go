@@ -169,7 +169,7 @@ func (g *GoMailUIBrowse) SetMessage(email *client.EmailMessage) {
 }
 
 func (g *GoMailUIBrowse) Run() {
-	model := NewEmailServerModel()
+	model := NewEmailClientModel()
 	model.SetServer(client.NewTestServer())
 	g.buildUI(model).Run()
 }

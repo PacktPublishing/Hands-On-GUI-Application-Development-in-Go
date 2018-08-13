@@ -40,7 +40,7 @@ func (e *EmailClientModel) SetServer(s *client.EmailServer) {
 	e.itemsResetPublisher.Publish(e.root)
 }
 
-func NewEmailServerModel() *EmailClientModel {
+func NewEmailClientModel() *EmailClientModel {
 	return &EmailClientModel{}
 }
 
