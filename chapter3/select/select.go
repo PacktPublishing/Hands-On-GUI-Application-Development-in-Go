@@ -20,10 +20,8 @@ func main() {
 	quit := make(chan int)
 	go square(c, quit)
 
-	func() {
-		for i := 0; i < 5; i++ {
-			fmt.Println("Square", <-c)
-		}
-		quit <- 1
-	}()
+	for i := 0; i < 5; i++ {
+		fmt.Println("Square", <-c)
+	}
+	quit <- 1
 }
