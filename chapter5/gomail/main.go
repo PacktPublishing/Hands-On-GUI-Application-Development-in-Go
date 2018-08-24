@@ -14,7 +14,7 @@ type mainUI struct {
 	server *client.EmailServer
 }
 
-func (m *mainUI) SetEmail(e *client.EmailMessage) {
+func (m *mainUI) setEmail(e *client.EmailMessage) {
 	m.subject.SetText(e.Subject)
 	m.to.SetText(e.ToEmailString())
 	m.from.SetText(e.FromEmailString())
@@ -22,12 +22,12 @@ func (m *mainUI) SetEmail(e *client.EmailMessage) {
 	m.content.SetText(e.Content)
 }
 
-func (m *mainUI) ListEmails(list []*client.EmailMessage) {
+func (m *mainUI) listEmails(list []*client.EmailMessage) {
 	for _, email := range list {
 		item := ui.NewButton(email.Subject)
 		captured := email
 		item.OnClicked(func(*ui.Button) {
-			m.SetEmail(captured)
+			m.setEmail(captured)
 		})
 		m.list.Append(item, false)
 	}
@@ -119,8 +119,8 @@ func main() {
 		main.server = server
 		window := main.buildUI()
 
-		main.ListEmails(server.ListMessages())
-		main.SetEmail(server.CurrentMessage())
+		main.listEmails(server.ListMessages())
+		main.setEmail(server.CurrentMessage())
 		window.Show()
 	})
 	if err != nil {

@@ -15,7 +15,7 @@ type composeUI struct {
 	server *client.EmailServer
 }
 
-func (c *composeUI) CreateMessage() *client.EmailMessage {
+func (c *composeUI) createMessage() *client.EmailMessage {
 	email := &client.EmailMessage{}
 
 	email.Subject = c.subject.Text()
@@ -54,7 +54,7 @@ func (c *composeUI) buildUI() *ui.Window {
 	buttonBox.Append(cancel, false)
 	send := ui.NewButton("Send")
 	send.OnClicked(func(*ui.Button) {
-		email := c.CreateMessage()
+		email := c.createMessage()
 		c.server.Send(email)
 
 		window.Hide()
