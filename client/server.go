@@ -19,6 +19,28 @@ func (e *EmailServer) Send(email *EmailMessage) {
 	log.Println("Send email: ", email)
 }
 
+func (e *EmailServer) Incoming() chan *EmailMessage {
+	incoming := make(chan *EmailMessage)
+
+	go func() {
+		timer := time.NewTimer(time.Second * 10)
+		<- timer.C
+
+		newmail := &EmailMessage{
+			Subject: "Recently arrived",
+			Content: "This email was delivered after the email application loaded.\n\n" +
+				"It is just a test email but it arrived.",
+			To: "me@example.com",
+			From: "automation@example.com",
+			Date: time.Now()}
+
+		e.emails = append([]*EmailMessage{newmail}, e.emails...)
+		incoming <- newmail
+	}()
+
+	return incoming
+}
+
 func NewTestServer() *EmailServer {
 	return &EmailServer{
 		[]*EmailMessage{

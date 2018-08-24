@@ -22,15 +22,25 @@ func (m *mainUI) setEmail(e *client.EmailMessage) {
 	m.content.SetText(e.Content)
 }
 
+func (m *mainUI) appendEmail(email *client.EmailMessage) {
+	item := ui.NewButton(email.Subject)
+	item.OnClicked(func(*ui.Button) {
+		m.setEmail(email)
+	})
+	m.list.Append(item, false)
+}
+
 func (m *mainUI) listEmails(list []*client.EmailMessage) {
 	for _, email := range list {
-		item := ui.NewButton(email.Subject)
 		captured := email
-		item.OnClicked(func(*ui.Button) {
-			m.setEmail(captured)
-		})
-		m.list.Append(item, false)
+		m.appendEmail(captured)
 	}
+}
+
+func (m *mainUI) incomingEmail(email *client.EmailMessage) {
+	ui.QueueMain(func() {
+		m.appendEmail(email)
+	})
 }
 
 func (m *mainUI) buildToolbar() ui.Control {
@@ -121,6 +131,13 @@ func main() {
 
 		main.listEmails(server.ListMessages())
 		main.setEmail(server.CurrentMessage())
+		go func() {
+			incoming := server.Incoming()
+			for email := range incoming {
+				main.incomingEmail(email)
+			}
+		}()
+
 		window.Show()
 	})
 	if err != nil {
