@@ -37,7 +37,8 @@ func (c *composeUI) buildUI() *ui.Window {
 	c.subject.SetText("subject")
 
 	toBox := ui.NewHorizontalBox()
-	toBox.Append(ui.NewLabel("To   "), false)
+	toBox.SetPadded(true)
+	toBox.Append(ui.NewLabel("To"), false)
 	c.to = ui.NewEntry()
 	c.to.SetText("email")
 	toBox.Append(c.to, true)
@@ -46,6 +47,7 @@ func (c *composeUI) buildUI() *ui.Window {
 	c.content.SetText("email content")
 
 	buttonBox := ui.NewHorizontalBox()
+	buttonBox.SetPadded(true)
 	buttonBox.Append(ui.NewLabel(""), true)
 	cancel := ui.NewButton("Cancel")
 	cancel.OnClicked(func(*ui.Button) {
@@ -62,6 +64,7 @@ func (c *composeUI) buildUI() *ui.Window {
 	buttonBox.Append(send, false)
 
 	layout := ui.NewVerticalBox()
+	layout.SetPadded(true)
 	layout.Append(c.subject, false)
 	layout.Append(toBox, false)
 	layout.Append(c.content, true)

@@ -86,9 +86,9 @@ func (m *mainUI) buildUI() *ui.Window {
 	m.subject = ui.NewLabel("subject")
 	m.content = ui.NewLabel("content")
 	labels := ui.NewVerticalBox()
-	labels.Append(ui.NewLabel("From  "), false)
-	labels.Append(ui.NewLabel("To  "), false)
-	labels.Append(ui.NewLabel("Date  "), false)
+	labels.Append(ui.NewLabel("From"), false)
+	labels.Append(ui.NewLabel("To"), false)
+	labels.Append(ui.NewLabel("Date"), false)
 
 	values := ui.NewVerticalBox()
 	m.from = ui.NewLabel("email")
@@ -99,20 +99,23 @@ func (m *mainUI) buildUI() *ui.Window {
 	values.Append(m.date, false)
 
 	meta := ui.NewHorizontalBox()
+	meta.SetPadded(true)
 	meta.Append(labels, false)
 	meta.Append(values, true)
 
 	detail := ui.NewVerticalBox()
+	detail.SetPadded(true)
 	detail.Append(m.subject, false)
 	detail.Append(meta, false)
 	detail.Append(ui.NewHorizontalSeparator(), false)
 	detail.Append(m.content, true)
 
 	layout := ui.NewVerticalBox()
+	layout.SetPadded(true)
 	layout.Append(m.buildToolbar(), false)
-	layout.Append(ui.NewLabel(" "), false)
 
 	content := ui.NewHorizontalBox()
+	content.SetPadded(true)
 	content.Append(inbox, false)
 	content.Append(ui.NewVerticalSeparator(), false)
 	content.Append(detail, true)
