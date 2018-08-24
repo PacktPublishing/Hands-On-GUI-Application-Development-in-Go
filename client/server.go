@@ -1,5 +1,6 @@
 package client
 
+import "log"
 import "time"
 
 type EmailServer struct {
@@ -12,6 +13,10 @@ func (e *EmailServer) CurrentMessage() *EmailMessage {
 
 func (e *EmailServer) ListMessages() []*EmailMessage {
 	return e.emails
+}
+
+func (e *EmailServer) Send(email *EmailMessage) {
+	log.Println("Send email: ", email)
 }
 
 func NewTestServer() *EmailServer {
