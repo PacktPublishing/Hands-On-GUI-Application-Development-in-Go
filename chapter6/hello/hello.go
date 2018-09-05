@@ -16,11 +16,12 @@ func main() {
 		gtk.MainQuit()
 	})
 
-	vbox := gtk.NewVBox(false, 1)
+	vbox := gtk.NewVBox(false, 3)
 	vbox.Add(gtk.NewLabel("Hello World!"))
 	vbox.Add(quit)
 
 	window.Add(vbox)
+	window.SetBorderWidth(3)
 	window.ShowAll()
 	gtk.Main()
 }
