@@ -69,13 +69,14 @@ func (b *button) OnInputEvent(e interface{}, origin image.Point) node.EventHandl
 type cell struct {
 	node.LeafEmbed
 
-	icon    image.Image
+	icon    *scaledImage
 	label   string
 	onClick func()
 }
 
 func newCell(icon image.Image, label string, onClick func()) *cell {
-	c := &cell{label: label, icon: icon, onClick: onClick}
+	img := newScaledImage(icon)
+	c := &cell{label: label, icon: img, onClick: onClick}
 	c.Wrapper = c
 
 	return c
@@ -94,13 +95,16 @@ func (c *cell) PaintBase(ctx *node.PaintBaseContext, origin image.Point) error {
 	face := ctx.Theme.AcquireFontFace(theme.FontFaceOptions{})
 	defer ctx.Theme.ReleaseFontFace(theme.FontFaceOptions{}, face)
 
-	ratio := float32(c.icon.Bounds().Max.Y) / float32(c.icon.Bounds().Max.X)
-	if c.icon.Bounds().Max.Y > c.icon.Bounds().Max.X {
-		ratio = float32(c.icon.Bounds().Max.X) / float32(c.icon.Bounds().Max.Y)
+	img := c.icon.Src
+	if img != nil {
+		ratio := float32(img.Bounds().Max.Y) / float32(img.Bounds().Max.X)
+		if img.Bounds().Max.Y > img.Bounds().Max.X {
+			ratio = float32(img.Bounds().Max.X) / float32(img.Bounds().Max.Y)
+		}
+		scaled := scaleImage(img, iconSize, int(float32(iconSize)*ratio))
+		draw.Draw(ctx.Dst, c.Rect.Add(origin), scaled, image.Point{}, draw.Over)
 	}
-	scaled := scaleImage(c.icon, iconSize, int(float32(iconSize)*ratio))
 
-	draw.Draw(ctx.Dst, c.Rect.Add(origin), scaled, image.Point{}, draw.Over)
 	d := font.Drawer{
 		Dst:  ctx.Dst,
 		Src:  theme.Foreground.Uniform(ctx.Theme),
@@ -176,6 +180,8 @@ func (w *scaledImage) PaintBase(ctx *node.PaintBaseContext, origin image.Point) 
 func (w *scaledImage) SetImage(img image.Image) {
 	w.Src = img
 	w.Mark(node.MarkNeedsPaintBase)
+
+	refresh(w)
 }
 
 var checkers = &checkerImage{}
@@ -205,4 +211,9 @@ func (c *checkerImage) At(x, y int) color.Color {
 	} else {
 		return color.RGBA{0x99, 0x99, 0x99, 0xff}
 	}
+}
+
+func refresh(_ node.Node) {
+	// Ideally we should refresh but this requires a reference to the window
+	// win.Send(paint.Event{})
 }

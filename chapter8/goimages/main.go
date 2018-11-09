@@ -32,7 +32,7 @@ var spaceSize = unit.DIPs(space)
 
 var name *widget.Label
 var view *scaledImage
-var images []image.Image
+var images []*asyncImage
 var names []string
 var index = 0
 
@@ -42,7 +42,7 @@ func changeImage(offset int) {
 		return
 	}
 
-	chooseImage(newidx, images[newidx])
+	chooseImage(newidx)
 }
 
 func previousImage() {
@@ -53,14 +53,14 @@ func nextImage() {
 	changeImage(1)
 }
 
-func chooseImage(idx int, img image.Image) {
+func chooseImage(idx int) {
 	index = idx
-	view.SetImage(img)
+	view.SetImage(images[idx].img)
+
 	name.Text = names[idx]
 	name.Mark(node.MarkNeedsMeasureLayout)
 	name.Mark(node.MarkNeedsPaintBase)
-
-	//	win.Send(paint.Event{})
+	refresh(name)
 }
 
 func expandSpace() node.Node {
@@ -92,44 +92,36 @@ func loadDirIcon() image.Image {
 	return icon
 }
 
-func makeCell(idx int, name string, icon image.Image) node.Node {
+func makeCell(idx int, name string) *cell {
 	var onClick func()
-	if icon == nil {
+	var icon image.Image
+	if idx < 0 {
 		icon = loadDirIcon()
 	} else {
-		onClick = func() { chooseImage(idx, icon) }
+		onClick = func() { chooseImage(idx) }
 	}
 
 	return newCell(icon, name, onClick)
 }
 
 func makeList(dir string, files []string) node.Node {
-	parent := makeCell(-1, filepath.Base(dir), nil)
+	parent := makeCell(-1, filepath.Base(dir))
 	children := []node.Node{parent}
 
 	for idx, name := range files {
-		img := loadImage(path.Join(dir, name))
-		cell := makeCell(idx, name, img)
+		cell := makeCell(idx, name)
+		i := idx
+		img := newAsyncImage(path.Join(dir, name), func(img image.Image) {
+			cell.icon.SetImage(img)
+			if i == index {
+				view.SetImage(img)
+			}
+		})
 		children = append(children, cell)
 		images = append(images, img)
 	}
 
 	return widget.NewFlow(widget.AxisVertical, children...)
-}
-
-func loadImage(name string) image.Image {
-	reader, err := os.Open(name)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer reader.Close()
-
-	img, _, err := image.Decode(reader)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return img
 }
 
 func scaleImage(src image.Image, width, height int) image.Image {
@@ -174,7 +166,7 @@ func loadUI(dir string) {
 		sheet := widget.NewSheet(widget.NewUniform(theme.Background, container))
 
 		if len(images) > 0 {
-			chooseImage(0, images[0])
+			chooseImage(0)
 		}
 
 		container.Measure(theme.Default, 0, 0)
@@ -209,4 +201,32 @@ func main() {
 		}
 	}
 	loadUI(dir)
+}
+
+type asyncImage struct {
+	path     string
+	img      image.Image
+	callback func(image.Image)
+}
+
+func (a *asyncImage) load() {
+	reader, err := os.Open(a.path)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer reader.Close()
+
+	a.img, _, err = image.Decode(reader)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	a.callback(a.img)
+}
+
+func newAsyncImage(path string, loaded func(image.Image)) *asyncImage {
+	img := &asyncImage{path: path, callback:loaded}
+	go img.load()
+
+	return img
 }
