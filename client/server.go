@@ -5,6 +5,7 @@ import "time"
 
 type EmailServer struct {
 	emails []*EmailMessage
+	incoming chan *EmailMessage
 }
 
 func (e *EmailServer) CurrentMessage() *EmailMessage {
@@ -20,34 +21,39 @@ func (e *EmailServer) Send(email *EmailMessage) {
 }
 
 func (e *EmailServer) Incoming() chan *EmailMessage {
-	incoming := make(chan *EmailMessage)
+	e.incoming = make(chan *EmailMessage)
 
-	go func() {
-		timer := time.NewTimer(time.Second * 10)
-		<- timer.C
+	return e.incoming
+}
 
-		newmail := &EmailMessage{
-			Subject: "Recently arrived",
-			Content: "This email was delivered after the email application loaded.\n\n" +
-				"It is just a test email but it arrived.",
-			To: "me@example.com",
-			From: "automation@example.com",
-			Date: time.Now()}
+func (e *EmailServer) simulateArrival() {
+	timer := time.NewTimer(time.Second * 10)
+	<- timer.C
 
-		e.emails = append([]*EmailMessage{newmail}, e.emails...)
-		incoming <- newmail
-	}()
+	newmail := &EmailMessage{
+		Subject: "Recently arrived",
+		Content: "This email was delivered after the email application loaded.\n\n" +
+			"It is just a test email but it arrived.",
+		To: "me@example.com",
+		From: "automation@example.com",
+		Date: time.Now()}
 
-	return incoming
+	e.emails = append([]*EmailMessage{newmail}, e.emails...)
+
+	if e.incoming != nil {
+		e.incoming <- newmail
+	}
 }
 
 func NewTestServer() *EmailServer {
-	return &EmailServer{
-		[]*EmailMessage{
+	server := &EmailServer{emails:[]*EmailMessage{
 			NewMessage("Testing", "This is an email from our test email server",
 				"me@example.com", "you@example.com", time.Now()),
 			NewMessage("Older", "This is an old email, it is not the current one",
 				"me@example.com", "admin@example.com", time.Now().AddDate(0, 0, -1)),
 		},
 	}
+
+	go server.simulateArrival()
+	return server
 }
