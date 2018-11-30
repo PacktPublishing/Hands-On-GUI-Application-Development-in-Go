@@ -64,9 +64,6 @@ func (ui *mainUI) drawCompose(ctx *nk.Context) {
 	update := nk.NkBegin(ctx, "Compose", bounds, nk.WindowNoScrollbar|nk.WindowBorder|nk.WindowTitle|nk.WindowMovable|nk.WindowMinimizable)
 
 	if update > 0 {
-		if ui.compose == nil {
-			ui.compose = newComposeUI(ui)
-		}
 		ui.compose.drawLayout(ctx, 296)
 	}
 
@@ -75,7 +72,7 @@ func (ui *mainUI) drawCompose(ctx *nk.Context) {
 
 func (ui *mainUI) drawLayout(win *glfw.Window, ctx *nk.Context, height int) {
 	nk.NkMenubarBegin(ctx)
-	nk.NkLayoutRowBegin(ctx, nk.LayoutStaticRow, 25, 3)
+	nk.NkLayoutRowBegin(ctx, nk.LayoutDynamicRow, 25, 3)
 	nk.NkLayoutRowPush(ctx, 45)
 	if nk.NkMenuBeginLabel(ctx, "File", nk.TextAlignLeft, nk.NkVec2(120, 200)) > 0 {
 		nk.NkLayoutRowDynamic(ctx, 25, 1)
