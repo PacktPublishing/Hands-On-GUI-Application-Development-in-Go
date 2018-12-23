@@ -14,23 +14,23 @@ type composeUI struct {
 
 	list *widget.Group
 
-	content, subject, to, from, date *widget.Label
+	message, subject, to *widget.Entry
 }
 
 func (c *composeUI) loadUI() fyne.Window {
 	compose := c.app.NewWindow("GoMail Compose")
 
-	subject := widget.NewEntry()
-	subject.SetText("subject")
+	c.subject = widget.NewEntry()
+	c.subject.SetText("subject")
 	toLabel := widget.NewLabel("To")
-	to := widget.NewEntry()
-	to.SetText("email")
+	c.to = widget.NewEntry()
+	c.to.SetText("email")
 
-	message := widget.NewEntry()
-	message.SetText("content")
+	c.message = widget.NewMultilineEntry()
+	c.message.SetText("content")
 
 	send := widget.NewButton("Send", func() {
-		email := client.NewMessage(c.subject.Text, c.content.Text,
+		email := client.NewMessage(c.subject.Text, c.message.Text,
 			client.Email(c.to.Text), "", time.Now())
 		c.server.Send(email)
 		compose.Close()
@@ -44,11 +44,11 @@ func (c *composeUI) loadUI() fyne.Window {
 		send)
 
 	top := fyne.NewContainerWithLayout(
-		layout.NewBorderLayout(subject, nil, toLabel, nil),
-		subject, toLabel, to)
+		layout.NewBorderLayout(c.subject, nil, toLabel, nil),
+		c.subject, toLabel, c.to)
 	content := fyne.NewContainerWithLayout(
 		layout.NewBorderLayout(top, buttons, nil, nil),
-		top, message, buttons)
+		top, c.message, buttons)
 	compose.SetContent(content)
 
 	compose.Resize(fyne.NewSize(400, 320))
