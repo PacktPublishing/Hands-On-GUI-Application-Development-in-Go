@@ -21,13 +21,13 @@ func (c *composeUI) loadUI() fyne.Window {
 	compose := c.app.NewWindow("GoMail Compose")
 
 	c.subject = widget.NewEntry()
-	c.subject.SetText("subject")
+	c.subject.SetPlaceHolder("subject")
 	toLabel := widget.NewLabel("To")
 	c.to = widget.NewEntry()
-	c.to.SetText("email")
+	c.to.SetPlaceHolder("email")
 
 	c.message = widget.NewMultilineEntry()
-	c.message.SetText("content")
+	c.message.SetPlaceHolder("content")
 
 	send := widget.NewButton("Send", func() {
 		email := client.NewMessage(c.subject.Text, c.message.Text,
