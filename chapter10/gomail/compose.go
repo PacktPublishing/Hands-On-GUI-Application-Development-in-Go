@@ -13,6 +13,7 @@ type composeUI struct {
 	server *client.EmailServer
 
 	list *widget.Group
+	send *widget.Button
 
 	message, subject, to *widget.Entry
 }
@@ -29,19 +30,19 @@ func (c *composeUI) loadUI() fyne.Window {
 	c.message = widget.NewMultilineEntry()
 	c.message.SetPlaceHolder("content")
 
-	send := widget.NewButton("Send", func() {
+	c.send = widget.NewButton("Send", func() {
 		email := client.NewMessage(c.subject.Text, c.message.Text,
 			client.Email(c.to.Text), "", time.Now())
 		c.server.Send(email)
 		compose.Close()
 	})
-	send.Style = widget.PrimaryButton
+	c.send.Style = widget.PrimaryButton
 	buttons := widget.NewHBox(
 		layout.NewSpacer(),
 		widget.NewButton("Cancel", func() {
 			compose.Close()
 		}),
-		send)
+		c.send)
 
 	top := fyne.NewContainerWithLayout(
 		layout.NewBorderLayout(c.subject, nil, toLabel, nil),
