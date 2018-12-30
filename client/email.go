@@ -22,6 +22,10 @@ func (e *EmailMessage) DateString() string {
 	return e.Date.Format(time.Stamp)
 }
 
+func (e *EmailMessage) String() string {
+	return "Email to:" + e.ToEmailString() + " subject:\"" + e.Subject + "\""
+}
+
 func NewMessage(subject, content string, to, from Email, date time.Time) *EmailMessage {
 	return &EmailMessage{subject, content, to, from, date}
 }

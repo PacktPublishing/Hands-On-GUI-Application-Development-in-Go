@@ -6,6 +6,8 @@ import "time"
 type EmailServer struct {
 	emails []*EmailMessage
 	incoming chan *EmailMessage
+
+	Outbox []*EmailMessage
 }
 
 func (e *EmailServer) CurrentMessage() *EmailMessage {
@@ -17,7 +19,8 @@ func (e *EmailServer) ListMessages() []*EmailMessage {
 }
 
 func (e *EmailServer) Send(email *EmailMessage) {
-	log.Println("Send email: ", email)
+	log.Println("Send", email)
+	e.Outbox = append(e.Outbox, email)
 }
 
 func (e *EmailServer) Incoming() chan *EmailMessage {
