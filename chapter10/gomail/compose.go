@@ -27,7 +27,7 @@ func (c *composeUI) loadUI() fyne.Window {
 	c.to = widget.NewEntry()
 	c.to.SetPlaceHolder("email")
 
-	c.message = widget.NewMultilineEntry()
+	c.message = widget.NewMultiLineEntry()
 	c.message.SetPlaceHolder("content")
 
 	c.send = widget.NewButton("Send", func() {
