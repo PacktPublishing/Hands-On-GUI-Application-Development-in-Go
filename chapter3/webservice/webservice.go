@@ -40,7 +40,7 @@ func main() {
 
 	fmt.Println("Downloading...")
 	data, _ = readFromURL("http://echo.jsontest.com/title/Sir/" +
-		"firstname/Tom/surname/Jones/username/singer1/")
+		"firstname/Anthony/surname/Other/username/anon123/")
 	fmt.Println("Download:", string(data))
 
 	person = &Person{}
