@@ -170,9 +170,9 @@ func (g *GoMailUIBrowse) SetMessage(email *client.EmailMessage) {
 	g.emailDetail.Reset()
 }
 
-func (g *GoMailUIBrowse) incomingEmail(model *EmailClientModel) {
+func (g *GoMailUIBrowse) incomingEmail(email *client.EmailMessage, model *EmailClientModel) {
 	g.window.Synchronize(func() {
-		model.ItemChanged()
+		model.AddEmail(email)
 	})
 }
 
@@ -181,10 +181,12 @@ func (g *GoMailUIBrowse) Run() {
 	server := client.NewTestServer()
 	model.SetServer(server)
 
-	incoming := server.Incoming()
-	for _ = range incoming {
-		g.incomingEmail(model)
-	}
+	go func() {
+		incoming := server.Incoming()
+		for email := range incoming {
+			g.incomingEmail(email, model)
+		}
+	}()
 
 	g.buildUI(model).Run()
 }

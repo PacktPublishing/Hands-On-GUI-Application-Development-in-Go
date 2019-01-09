@@ -9,7 +9,7 @@ import "github.com/PacktPublishing/Hands-On-GUI-Application-Development-in-Go/cl
 type EmailClientModel struct {
 	Server *client.EmailServer
 
-	root walk.TreeItem
+	root *InboxList
 
 	itemsResetPublisher  walk.TreeItemEventPublisher
 	itemChangedPublisher walk.TreeItemEventPublisher
@@ -33,6 +33,11 @@ func (e *EmailClientModel) ItemsReset() *walk.TreeItemEvent {
 
 func (e *EmailClientModel) ItemChanged() *walk.TreeItemEvent {
 	return e.itemChangedPublisher.Event()
+}
+
+func (e *EmailClientModel) AddEmail(email *client.EmailMessage) {
+	e.root.Add(email)
+	e.itemsResetPublisher.Publish(e.root)
 }
 
 func (e *EmailClientModel) SetServer(s *client.EmailServer) {
@@ -64,6 +69,10 @@ func (i *InboxList) ChildCount() int {
 
 func (i *InboxList) ChildAt(index int) walk.TreeItem {
 	return i.emails[index]
+}
+
+func (i *InboxList) Add(email *client.EmailMessage) {
+	i.emails = append(i.emails, &EmailModel{email, i})
 }
 
 func NewInboxList(l []*client.EmailMessage) *InboxList {
