@@ -1,12 +1,13 @@
 package main
 
 import (
+	"fyne.io/fyne"
+	"fyne.io/fyne/app"
+	"fyne.io/fyne/layout"
+	"fyne.io/fyne/theme"
+	"fyne.io/fyne/widget"
+
 	"github.com/PacktPublishing/Hands-On-GUI-Application-Development-in-Go/client"
-	"github.com/fyne-io/fyne"
-	"github.com/fyne-io/fyne/app"
-	"github.com/fyne-io/fyne/layout"
-	"github.com/fyne-io/fyne/theme"
-	"github.com/fyne-io/fyne/widget"
 )
 
 type mainUI struct {

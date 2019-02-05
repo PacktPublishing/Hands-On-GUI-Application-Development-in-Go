@@ -3,7 +3,8 @@ package main
 import (
 	"testing"
 
-	"github.com/fyne-io/fyne/test"
+	"fyne.io/fyne/test"
+
 	"github.com/PacktPublishing/Hands-On-GUI-Application-Development-in-Go/client"
 	"github.com/stretchr/testify/assert"
 )

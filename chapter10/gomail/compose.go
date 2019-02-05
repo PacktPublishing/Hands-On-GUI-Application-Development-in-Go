@@ -1,11 +1,13 @@
 package main
 
 import (
-	"github.com/PacktPublishing/Hands-On-GUI-Application-Development-in-Go/client"
-	"github.com/fyne-io/fyne"
-	"github.com/fyne-io/fyne/layout"
-	"github.com/fyne-io/fyne/widget"
 	"time"
+
+	"fyne.io/fyne"
+	"fyne.io/fyne/layout"
+	"fyne.io/fyne/widget"
+
+	"github.com/PacktPublishing/Hands-On-GUI-Application-Development-in-Go/client"
 )
 
 type composeUI struct {
