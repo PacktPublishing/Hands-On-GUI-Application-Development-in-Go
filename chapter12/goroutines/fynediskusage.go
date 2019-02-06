@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/fyne-io/fyne/desktop"
-	"github.com/fyne-io/fyne/widget"
 	"os"
 	"path/filepath"
+
+	"fyne.io/fyne/app"
+	"fyne.io/fyne/widget"
 
 	"github.com/PacktPublishing/Hands-On-GUI-Application-Development-in-Go/chapter12/goroutines/disk"
 )
@@ -44,7 +45,7 @@ func main() {
 		path = os.Args[1]
 	}
 
-	app := desktop.NewApp()
+	app := app.New()
 	win := app.NewWindow("Disk Usage")
 
 	nameList := widget.NewVBox()
@@ -57,5 +58,5 @@ func main() {
 	))
 
 	go fyneReportUsage(path, nameList, sizeList, total)
-	win.Show()
+	win.ShowAndRun()
 }
