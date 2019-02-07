@@ -3,33 +3,33 @@ package client
 import "log"
 import "time"
 
-type emailServer struct {
+type TestEmailServer struct {
 	emails   []*EmailMessage
 	incoming chan *EmailMessage
 
 	Outbox []*EmailMessage
 }
 
-func (e *emailServer) CurrentMessage() *EmailMessage {
+func (e *TestEmailServer) CurrentMessage() *EmailMessage {
 	return e.emails[0]
 }
 
-func (e *emailServer) ListMessages() []*EmailMessage {
+func (e *TestEmailServer) ListMessages() []*EmailMessage {
 	return e.emails
 }
 
-func (e *emailServer) Send(email *EmailMessage) {
+func (e *TestEmailServer) Send(email *EmailMessage) {
 	log.Println("Send", email)
 	e.Outbox = append(e.Outbox, email)
 }
 
-func (e *emailServer) Incoming() chan *EmailMessage {
+func (e *TestEmailServer) Incoming() chan *EmailMessage {
 	e.incoming = make(chan *EmailMessage)
 
 	return e.incoming
 }
 
-func (e *emailServer) simulateArrival() {
+func (e *TestEmailServer) simulateArrival() {
 	timer := time.NewTimer(time.Second * 10)
 	<-timer.C
 
@@ -48,8 +48,8 @@ func (e *emailServer) simulateArrival() {
 	}
 }
 
-func NewTestServer() EmailServer {
-	server := &emailServer{emails: []*EmailMessage{
+func NewTestServer() *TestEmailServer {
+	server := &TestEmailServer{emails: []*EmailMessage{
 		NewMessage("Testing", "This is an email from our test email server",
 			"me@example.com", "you@example.com", time.Now()),
 		NewMessage("Older", "This is an old email, it is not the current one",
