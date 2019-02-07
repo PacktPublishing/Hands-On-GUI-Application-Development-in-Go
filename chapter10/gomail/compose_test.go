@@ -22,9 +22,9 @@ func TestCompose_Send(t *testing.T) {
 	address := "test@example.com"
 	test.Type(compose.to, address)
 
-	test.Click(compose.send)
+	test.Tap(compose.send)
 	assert.True(t, closed)
-	assert.Equal(t, pending + 1, len(server.Outbox))
+	assert.Equal(t, pending+1, len(server.Outbox))
 
 	email := server.Outbox[len(server.Outbox)-1]
 	assert.Equal(t, address, email.ToEmailString())
