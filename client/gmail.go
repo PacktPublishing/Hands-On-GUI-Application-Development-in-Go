@@ -8,6 +8,7 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+	"math"
 	"net/http"
 	"os"
 	"strings"
@@ -23,8 +24,9 @@ import (
 )
 
 type gMailServer struct {
-	user string
-	srv  *gmail.Service
+	user    string
+	srv     *gmail.Service
+	history uint64
 
 	emails   []*EmailMessage
 	incoming chan *EmailMessage
@@ -49,10 +51,23 @@ func (g *gMailServer) Send(email *EmailMessage) {
 }
 
 func (g *gMailServer) Incoming() chan *EmailMessage {
-	return nil
+	in := make(chan *EmailMessage)
+
+	go func() {
+		for {
+			time.Sleep(10 * time.Second)
+
+			for _, email := range g.downloadNewMessages() {
+				g.emails = append([]*EmailMessage{email}, g.emails...)
+				in <- email
+			}
+		}
+	}()
+
+	return in
 }
 
-func NewGmailServer() EmailServer {
+func NewGMailServer() EmailServer {
 	server := &gMailServer{user: "me"}
 	server.srv = setupService()
 
@@ -192,6 +207,7 @@ func (g *gMailServer) downloadMessage(message *gmail.Message) *EmailMessage {
 	if err != nil {
 		log.Fatalf("Unable to retrieve message payload: %v", err)
 	}
+	g.history = uint64(math.Max(float64(g.history), float64(mail.HistoryId)))
 
 	var subject string
 	var to, from Email
@@ -217,4 +233,25 @@ func (g *gMailServer) downloadMessage(message *gmail.Message) *EmailMessage {
 	}
 
 	return NewMessage(subject, content, to, from, date)
+}
+
+// downloadNewMessages caches all messages in a user's Inbox since the most recent one seen
+func (g *gMailServer) downloadNewMessages() []*EmailMessage{
+	req := g.srv.Users.History.List(g.user)
+	req.StartHistoryId(g.history)
+	req.LabelId("INBOX")
+	resp, err := req.Do()
+	if err != nil {
+		log.Fatalf("Unable to retrieve Inbox items: %v", err)
+	}
+
+	var emails []*EmailMessage
+	for _, history := range resp.History {
+		for _, message := range history.Messages {
+			email := g.downloadMessage(message)
+			emails = append(emails, email)
+		}
+	}
+
+	return emails
 }
