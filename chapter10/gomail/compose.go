@@ -12,7 +12,7 @@ import (
 
 type composeUI struct {
 	app    fyne.App
-	server *client.EmailServer
+	server client.EmailServer
 
 	list *widget.Group
 	send *widget.Button
@@ -58,7 +58,7 @@ func (c *composeUI) loadUI() fyne.Window {
 	return compose
 }
 
-func newCompose(mailApp fyne.App, server *client.EmailServer) *composeUI {
+func newCompose(mailApp fyne.App, server client.EmailServer) *composeUI {
 	ui := &composeUI{
 		app:    mailApp,
 		server: server,

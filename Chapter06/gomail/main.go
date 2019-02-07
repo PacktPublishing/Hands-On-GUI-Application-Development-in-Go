@@ -14,7 +14,7 @@ type mainUI struct {
 	content *gtk.TextView
 	subject, to, from, date *gtk.Label
 
-	server    *client.EmailServer
+	server    client.EmailServer
 	listModel *gtk.ListStore
 	listIter  gtk.TreeIter
 }
@@ -101,7 +101,7 @@ func (m *mainUI) Select(selection *gtk.TreeSelection, model *gtk.TreeModel, path
 	return true
 }
 
-func (m *mainUI) showMain(server *client.EmailServer) {
+func (m *mainUI) showMain(server client.EmailServer) {
 	gtk.Init(nil)
 	window := gtk.NewWindow(gtk.WINDOW_TOPLEVEL)
 	window.SetTitle("GoMail")

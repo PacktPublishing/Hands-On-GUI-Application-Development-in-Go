@@ -110,8 +110,8 @@ func main() {
 	msg := &EmailMessage{
 		"GoMail Test Email",
 		"This is a test email sent from a Go example",
-		"andy@andywilliams.me",
-		"handyande@gmail.com",
+		Email("example@test.com"),
+		Email("example@test.com"),
 		time.Now()}
 	postMessage(msg)
 

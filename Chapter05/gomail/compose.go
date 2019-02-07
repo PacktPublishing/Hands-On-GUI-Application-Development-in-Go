@@ -12,7 +12,7 @@ type composeUI struct {
 	subject, to, content *ui.Entry
 	dialog               ui.Window
 
-	server *client.EmailServer
+	server client.EmailServer
 }
 
 func (c *composeUI) createMessage() *client.EmailMessage {

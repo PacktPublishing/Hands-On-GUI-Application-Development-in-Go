@@ -7,7 +7,7 @@ import "github.com/lxn/walk"
 import "github.com/PacktPublishing/Hands-On-GUI-Application-Development-in-Go/client"
 
 type EmailClientModel struct {
-	Server *client.EmailServer
+	Server client.EmailServer
 
 	root *InboxList
 
@@ -40,7 +40,7 @@ func (e *EmailClientModel) AddEmail(email *client.EmailMessage) {
 	e.itemsResetPublisher.Publish(e.root)
 }
 
-func (e *EmailClientModel) SetServer(s *client.EmailServer) {
+func (e *EmailClientModel) SetServer(s client.EmailServer) {
 	e.Server = s
 
 	e.root = NewInboxList(s.ListMessages())

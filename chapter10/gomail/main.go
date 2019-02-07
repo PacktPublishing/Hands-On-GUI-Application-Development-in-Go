@@ -12,7 +12,7 @@ import (
 
 type mainUI struct {
 	app    fyne.App
-	server *client.EmailServer
+	server client.EmailServer
 
 	list *widget.Group
 
@@ -87,7 +87,7 @@ func (m *mainUI) addEmail(email *client.EmailMessage) fyne.CanvasObject {
 	})
 }
 
-func newMainUI(mailApp fyne.App, server *client.EmailServer) *mainUI {
+func newMainUI(mailApp fyne.App, server client.EmailServer) *mainUI {
 	ui := &mainUI{
 		app:    mailApp,
 		server: server,

@@ -7,7 +7,7 @@ import (
 )
 
 type composeUI struct {
-	server *client.EmailServer
+	server client.EmailServer
 
 	subject, to *gtk.Entry
 	content *gtk.TextView
@@ -37,7 +37,7 @@ func (c *composeUI) sendClicked() {
 	c.window.Destroy()
 }
 
-func showCompose(server *client.EmailServer) {
+func showCompose(server client.EmailServer) {
 	compose := new(composeUI)
 	compose.server = server
 

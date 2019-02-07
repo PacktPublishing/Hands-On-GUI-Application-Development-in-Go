@@ -7,7 +7,7 @@ import (
 )
 
 type composeUI struct {
-	server *client.EmailServer
+	server client.EmailServer
 
 	dialog      *widgets.QDialog
 	to, subject *widgets.QLineEdit
@@ -60,6 +60,6 @@ func (c *composeUI) show() {
 	dialog.Show()
 }
 
-func newCompose(server *client.EmailServer) *composeUI {
+func newCompose(server client.EmailServer) *composeUI {
 	return &composeUI{server: server}
 }

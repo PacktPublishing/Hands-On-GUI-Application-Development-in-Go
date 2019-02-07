@@ -15,7 +15,7 @@ type mainUI struct {
 	model *core.QStringListModel
 
 	app    *widgets.QApplication
-	server *client.EmailServer
+	server client.EmailServer
 
 	subject, to, from, date, content *widgets.QLabel
 }

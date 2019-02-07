@@ -15,7 +15,7 @@ func init() {
 }
 
 type mainUI struct {
-	server  *client.EmailServer
+	server  client.EmailServer
 	current *client.EmailMessage
 
 	compose *composeUI

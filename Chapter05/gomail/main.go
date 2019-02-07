@@ -11,7 +11,7 @@ type mainUI struct {
 	subject, from, to, date *ui.Label
 	list                    *ui.Box
 
-	server *client.EmailServer
+	server client.EmailServer
 }
 
 func (m *mainUI) setEmail(e *client.EmailMessage) {
