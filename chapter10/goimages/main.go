@@ -209,7 +209,7 @@ func main() {
 		widget.NewToolbarAction(theme.NavigateNextIcon(), nextImage))
 	fileList := makeList(parseArgs())
 
-	checkers := canvas.NewRaster(checkerColor)
+	checkers := canvas.NewRasterWithPixels(checkerColor)
 	async = newAsyncImage("")
 	async.image.FillMode = canvas.ImageFillContain
 	chooseImage(0)
