@@ -1,8 +1,8 @@
 package main
 
 /*
-#cgo CFLAGS: -I/home/andy/Code/Go/src/github.com/andlabs/ui
-#cgo LDFLAGS: /home/andy/Code/Go/src/github.com/andlabs/ui/libui_linux_amd64.a -lm -ldl
+#cgo CFLAGS: -I/home/username/go/src/github.com/andlabs/ui
+#cgo LDFLAGS: /home/username/go/src/github.com/andlabs/ui/libui_linux_amd64.a -lm -ldl
 #cgo pkg-config: gtk+-3.0
 
 #include "ui.h"
