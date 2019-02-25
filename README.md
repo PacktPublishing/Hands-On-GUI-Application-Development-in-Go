@@ -5,7 +5,7 @@ Hands On GUI Application Development in Go, Packt publication
 
 This is the code repository for [Hands-On GUI Application Development in Go](https://www.packtpub.com/application-development/hands-gui-application-development-go?utm_source=github&utm_medium=repository&utm_campaign=9781789138412 ), published by Packt.
 
-**Build responsive, cross-platform, graphical applications with the Go programming language	**
+*Build responsive, cross-platform, graphical applications with the Go programming language	*
 
 ## What is this book about?
 Go is often compared to C++ for low level programming and implementations that include faster processing, like GUIs. In fact it has been acclaimed to be better than C++ in terms of its concurrency and ease of use.
