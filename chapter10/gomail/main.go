@@ -31,11 +31,11 @@ func (m *mainUI) buildToolbar() *widget.Toolbar {
 		widget.NewToolbarSeparator(),
 		widget.NewToolbarAction(theme.DeleteIcon(), func() {
 		}),
-		widget.NewToolbarAction(theme.CutIcon(), func() {
+		widget.NewToolbarAction(theme.ContentCutIcon(), func() {
 		}),
-		widget.NewToolbarAction(theme.CopyIcon(), func() {
+		widget.NewToolbarAction(theme.ContentCopyIcon(), func() {
 		}),
-		widget.NewToolbarAction(theme.PasteIcon(), func() {
+		widget.NewToolbarAction(theme.ContentPasteIcon(), func() {
 		}),
 	)
 }
