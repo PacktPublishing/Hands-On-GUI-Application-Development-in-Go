@@ -17,7 +17,7 @@ func (g *GoMailUICompose) buildUI() Dialog {
 		Title:    "New GoMail",
 		AssignTo: &g.dialog,
 		Layout:   Grid{Columns: 3},
-		MinSize:  Size{400, 320},
+		MinSize:  Size{Width: 400, Height: 320},
 		Children: []Widget{
 
 			LineEdit{

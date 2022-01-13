@@ -98,7 +98,7 @@ func (g *GoMailUIBrowse) buildUI(model *EmailClientModel) MainWindow {
 		Title:     "GoMail",
 		AssignTo:  &g.window,
 		Layout:    HBox{},
-		MinSize:   Size{600, 400},
+		MinSize:   Size{Width: 600, Height: 400},
 		MenuItems: g.buildMenu(),
 		ToolBar:   g.buildToolbar(),
 		Children: []Widget{
