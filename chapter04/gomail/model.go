@@ -35,6 +35,14 @@ func (e *EmailClientModel) ItemChanged() *walk.TreeItemEvent {
 	return e.itemChangedPublisher.Event()
 }
 
+func (e *EmailClientModel) ItemInserted() *walk.TreeItemEvent {
+	return e.itemChangedPublisher.Event()
+}
+
+func (e *EmailClientModel) ItemRemoved() *walk.TreeItemEvent {
+	return e.itemChangedPublisher.Event()
+}
+
 func (e *EmailClientModel) AddEmail(email *client.EmailMessage) {
 	e.root.Add(email)
 	e.itemsResetPublisher.Publish(e.root)
